@@ -82,8 +82,8 @@ set "underline=!ESC![4m"
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
 echo [-] Loading: Variables...
 set "FILE_Collaboration=P:\"
-set "FILE_BackBatch=P:\Composite\All Students\Back Batch"
-set "FILE_Devices=P:\Composite\All Students\Back Batch\Devices"
+set "FILE_BackBatch=P:\Composite\All Students\BackBatch"
+set "FILE_Devices=P:\Composite\All Students\BackBatch\Devices"
 ping localhost -n %WaitTime% > nul
 :: ______________________________________________MAIN LOCATION VARIABLES ARE SET HERE__________________________________________________
 set "computers_path=P:\Composite\1k0de_files\computers"
@@ -246,7 +246,7 @@ goto crash
 
 :info
 set "InfoInp="
-set /p "Info_Inp=!white_black!Command:!reset! "
+set /p "Info_Inp=!reset!!white_black!Command:!reset! "
 if "!Info_Inp!" == "cls" (
 	echo !yellow!This command clears the console window^^! [Alternative Command: clear]!reset!
 	echo.
@@ -296,10 +296,52 @@ if exist "!FILE_Devices!" (
 goto crash
 
 :use
-echo Comming soon^^!
-pause
+set "Use_Inp="
+set /p "Use_Inp=!reset!!white_black!Tool Id:!reset! "
+if "!Use_Inp!" == "1" (
+	echo.
+	echo !reset!!green!Launching tool: Remote Command Execution...!reset!
+	ping localhost -n 2 > nul
+	goto rce_check
+	goto crash
+)
+echo !reset!!red_black!Error:!reset! Invalid tool id^^!
+echo.
 goto command_inp
 goto crash
+
+:rce_check
+echo !reset!!green!Checking files...
+ping localhost -n 2 > nul
+echo.
+if exist "!FILE_Collaboration!" (
+	echo !reset!!white_black!Success:!reset! Collaboration found^^!
+	if exist "!FILE_BackBatch!" (
+		echo !reset!!white_black!Success:!reset! BackBatch found^^!
+		if exist "!FILE_Devices!" (
+			echo !reset!!white_black!Success:!reset! Devices found^^!
+			goto remote_cmd_exec
+		) else (
+			echo !reset!!red_black!Error:!reset! Devices file is missing^^!
+			echo.
+			echo command_inp
+		)
+	) else (
+		echo !reset!!red_black!Error:!reset! BackBatch file is missing^^!
+		echo.
+		goto command_inp
+	)
+) else (
+	echo !reset!!red_black!Error:!reset! Collaboration file is missing^^!
+	echo.
+	goto command_inp
+)
+goto crash
+
+:remote_cmd_exec
+echo.
+set "Computer_ID_1="
+set /p "Computer_ID_1=!reset!!white_black!Computer id:!reset! "
 
 :crash
 cls
