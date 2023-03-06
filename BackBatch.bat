@@ -8,9 +8,15 @@
 
 @echo off
 chcp 65001
+SETLOCAL EnableDelayedExpansion
+if "!FILE_UNLOCK_KEY!" == "_@$tu35hg92ffj4g35g$^_U%&&JH+EGRwghwqQE|FW{RHp5" (
+	goto view_file
+)
+goto crash
+
+:view_file
 cls
 title Back Batch
-SETLOCAL EnableDelayedExpansion
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
   set ESC=%%b
 )
@@ -169,16 +175,11 @@ echo   ███    ██▄   ███    ███ ███    █▄    �
 echo   ███    ███   ███    ███ ███    ███   ███ ▀███▄        ███    ███   ███    ███     ███     ███    ███   ███    ███   
 echo ▄█████████▀    ███    █▀  ████████▀    ███   ▀█▀      ▄█████████▀    ███    █▀     ▄████▀   ████████▀    ███    █▀    
 echo                                        ▀                                                                              
-echo By: 1k0de
+echo By: 1k0de ^| !bold![Version]:!reset! !cyan!2.0.0!reset! !bold![Made By]: !reset!!cyan!1k0de!reset!
 echo.
-echo !underline!======================================================================================================================!reset!
-echo.
+::echo !underline!======================================================================================================================!reset!
+::echo.
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
-echo !bold![Version]: 2.0.0!reset!
-echo !bold![Made by]:!reset! !cyan!1k0de!reset!
-echo.
-echo !underline!======================================================================================================================!reset!
-echo.
 :: ________________________________________________________ Menu Section ______________________________________________________________
 echo !white_black!Main Menu!reset!
 echo.
@@ -190,12 +191,12 @@ if exist "!FILE_Collaboration!" (
 if exist "!FILE_BackBatch!" (
 	echo !bold!^|!reset!       Path: !green!!FILE_BackBatch!!reset! !bold!loaded!reset!
 ) else (
-	echo !bold!^|!reset!       Path: !green!!FILE_BackBatch!!reset! !bold!loaded!reset!
+	echo !bold!^|!reset!       Path: !green!!FILE_BackBatch!!reset! !red!not-loaded!reset!
 )
 if exist "!FILE_Devices!" (
 	echo !bold!^|!reset!       Path: !green!!FILE_Devices!!reset! !bold!loaded!reset!
 ) else (
-	echo !bold!^|!reset!       Path: !green!!FILE_Devices!!reset! !bold!loaded!reset!
+	echo !bold!^|!reset!       Path: !green!!FILE_Devices!!reset! !red!not-loaded!reset!
 )
 echo.
 echo !white_black!Available Tools!reset!
