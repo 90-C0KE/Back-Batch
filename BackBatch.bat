@@ -210,6 +210,7 @@ echo !bold!^|!reset!       !blue!exit!reset!
 echo !bold!^|!reset!       !blue!info!reset!
 echo !bold!^|!reset!       !blue!clear/cls!reset!
 echo !bold!^|!reset!       !blue!list_devices!reset!
+echo !bold!^|!reset!       !blue!use!reset!
 echo.
 goto command_inp
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
@@ -226,8 +227,77 @@ if "!CmdInput!" == "cls" (
 if "!CmdInput!" == "clear" (
 	goto Back_Batch_Console
 )
+if "!CmdInput!" == "exit" (
+	exit
+)
+if "!CmdInput!" == "info" (
+	goto info
+)
+if "!CmdInput!" == "list_devices" (
+	goto list_devices
+)
+if "!CmdInput!" == "use" (
+	goto use
+)
 echo !reset!!red_black!Invalid Command:!reset! !bold!!CmdInput!!reset!
 echo.
+goto command_inp
+goto crash
+
+:info
+set "InfoInp="
+set /p "Info_Inp=!white_black!Command:!reset! "
+if "!Info_Inp!" == "cls" (
+	echo !yellow!This command clears the console window^^! [Alternative Command: clear]!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "clear" (
+	echo !yellow!This command clears the console window^^! [Alternative Command: cls]!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "exit" (
+	echo !yellow!This command exits the BackBatch app^^!!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "info" (
+	echo !yellow!This command gives you info on any of the existing commands^^!!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "list_devices" (
+	echo !yellow!This command will list all the devices infected by BackBatch script^^!!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "use" (
+	echo !yellow!This command allows you to use any of the tools^^!!reset!
+	echo.
+	goto command_inp
+)
+echo !red!Invalid command: !Info_Inp!!reset!
+echo.
+goto command_inp
+goto crash
+
+:list_devices
+if exist "!FILE_Devices!" (
+	cd !FILE_Devices!
+	dir
+	echo.
+	goto command_inp
+) else (
+	echo !reset!!red_black!Error:!reset! The Devices directory !yellow![!FILE_Devices!]!reset! does not exist^^!!reset!
+	echo.
+	goto command_inp
+)
+goto crash
+
+:use
+echo Comming soon^^!
+pause
 goto command_inp
 goto crash
 
